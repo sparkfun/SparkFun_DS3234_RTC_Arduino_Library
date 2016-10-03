@@ -152,7 +152,7 @@ bool DS3234::autoTime()
 	}
 	else
 	{
-		DECtoBCD(_time[TIME_HOURS]);
+		_time[TIME_HOURS] = DECtoBCD(_time[TIME_HOURS]);
 	}
 	
 	_time[TIME_MONTH] = DECtoBCD(BUILD_MONTH);
