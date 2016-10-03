@@ -100,6 +100,22 @@ void DS3234::setTime(uint8_t sec, uint8_t min, uint8_t hour, uint8_t day, uint8_
 	setTime(_time, TIME_ARRAY_LENGTH);
 }
 
+void DS3234::setTime(uint8_t sec, uint8_t min, uint8_t hour12, bool pm, uint8_t day, uint8_t date, uint8_t month, uint8_t year)
+{
+	_time[TIME_SECONDS] = DECtoBCD(sec);
+	_time[TIME_MINUTES] = DECtoBCD(min);
+	_time[TIME_HOURS] = DECtoBCD(hour12);
+	_time[TIME_HOURS] |= TWELVE_HOUR_MODE;
+	if (pm)
+		_time[TIME_HOURS] |= TWELVE_HOUR_PM;
+	_time[TIME_DAY] = DECtoBCD(day);
+	_time[TIME_DATE] = DECtoBCD(date);
+	_time[TIME_MONTH] = DECtoBCD(month);
+	_time[TIME_YEAR] = DECtoBCD(year);
+	
+	setTime(_time, TIME_ARRAY_LENGTH);
+}
+
 // setTime -- Set time and date/day registers of DS3234 (using data array)
 void DS3234::setTime(uint8_t * time, uint8_t len)
 {
@@ -437,21 +453,29 @@ void DS3234::setAlarm1(uint8_t second, uint8_t minute, uint8_t hour, uint8_t dat
 // setAlarm1 (12-hour mode)
 void DS3234::setAlarm1(uint8_t second, uint8_t minute, uint8_t hour12, bool pm, uint8_t date, bool day)
 {
-	uint8_t hour24 = hour12;
+	uint8_t alarmRegister[4];
+	uint8_t timeValue[4] = {second, minute, hour12, date};
+	uint8_t timeMin[4] = {0, 0, 0, 1};
+	uint8_t timeMax[4] = {59, 59, 23, 31};
+	if (day)
+		timeMax[3] = 7;
 	
-	// Convert 12-hour to 24
-	if (pm)
+	spiReadBytes(DS3234_REGISTER_A1SEC, alarmRegister, 4); // Read current alarm values
+	
+	// Run through all four alarm values and set their register values:
+	for (int i=0; i<4; i++)
 	{
-		if (hour12 != 12)
-			hour24 += 12;
+		if (timeValue[i] == 255) // If 255, disable the check on that value
+			alarmRegister[i] |= ALARM_MODE_BIT;
+		else if ((timeValue[i] >= timeMin[i]) && (timeValue[i] <= timeMax[i]))
+			alarmRegister[i] = DECtoBCD(timeValue[i]);
 	}
-	else
-	{
-		if (hour12 == 12)
-			hour24 = 0;
-	}
-	// And call setAlarm1 24-hour mode:
-	setAlarm1(second, minute, hour24, date, day);
+	if (day) 
+		alarmRegister[3] |= ALARM_DAY_BIT;
+	alarmRegister[2] |= TWELVE_HOUR_MODE;
+	if (pm) alarmRegister[2] |= TWELVE_HOUR_PM;
+	
+	spiWriteBytes(DS3234_REGISTER_A1SEC, alarmRegister, 4); // Write the values
 }
 
 // setAlarm2 -- Alarm 2 can be set to trigger on minutes, hours, and/or date/day.
@@ -485,21 +509,29 @@ void DS3234::setAlarm2(uint8_t minute, uint8_t hour, uint8_t date, bool day)
 
 // setAlarm2 (12-hour mode)
 void DS3234::setAlarm2(uint8_t minute, uint8_t hour12, bool pm, uint8_t date, bool day)
-{
-	uint8_t hour24 = hour12;
+{	
+	uint8_t alarmRegister[3];
+	uint8_t timeValue[3] = {minute, hour12, date};
+	uint8_t timeMin[3] = {0, 0, 1};
+	uint8_t timeMax[3] = {59, 23, 31};
+	if (day)
+		timeMax[2] = 7;
 	
-	if (pm)
-	{
-		if (hour12 != 12)
-			hour24 += 12;
-	}
-	else
-	{
-		if (hour12 == 12)
-			hour24 = 0;
-	}
+	spiReadBytes(DS3234_REGISTER_A2MIN, alarmRegister, 3); // Read all alarm 2 registers
 	
-	setAlarm2(minute, hour24, date, day);
+	for (int i=0; i<3; i++)
+	{
+		if (timeValue[i] == 255) // If a value is 255, disable that alarm check
+			alarmRegister[i] |= ALARM_MODE_BIT;
+		else if ((timeValue[i] >= timeMin[i]) && (timeValue[i] <= timeMax[i]))
+			alarmRegister[i] = DECtoBCD(timeValue[i]);
+	}
+	if (day) 
+		alarmRegister[1] |= ALARM_DAY_BIT;
+	alarmRegister[1] |= TWELVE_HOUR_MODE;
+	if (pm) alarmRegister[1] |= TWELVE_HOUR_PM;
+	
+	spiWriteBytes(DS3234_REGISTER_A2MIN, alarmRegister, 3);
 }
 
 // alarm1 -- Check the alarm 1 flag in the status register

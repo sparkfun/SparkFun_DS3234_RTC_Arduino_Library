@@ -25,7 +25,7 @@ SparkFun Real Time Clock Module (v14)
 // Configurable Pin Definitions //
 //////////////////////////////////
 #define DS13074_CS_PIN 10 // DeadOn RTC Chip-select pin
-#define INTERRUPT_PIN 2 // DeadOn RTC SQW/interrupt pin (optional)
+//#define INTERRUPT_PIN 2 // DeadOn RTC SQW/interrupt pin (optional)
 
 void setup() 
 {
@@ -38,6 +38,7 @@ void setup()
   // Call rtc.begin([cs]) to initialize the library
   // The chip-select pin should be sent as the only parameter
   rtc.begin(DS13074_CS_PIN);
+  //rtc.set12Hour(); // Use rtc.set12Hour to set to 12-hour mode
 
   // Now set the time...
   // You can use the autoTime() function to set the RTC's clock and
@@ -47,9 +48,7 @@ void setup()
   // Or you can use the rtc.setTime(s, m, h, day, date, month, year)
   // function to explicitly set the time:
   // e.g. 7:32:16 | Monday October 31, 2016:
-  // rtc.setTime(16, 32, 7, 2, 31, 10, 16);  // Uncomment to manually set time
-  // rtc.set12Hour(); // Use rtc.set12Hour to set to 12-hour mode
-  //rtc.setTime(50, 59, 23, 1, 28, 1, 17);
+  //rtc.setTime(16, 32, 7, 2, 31, 10, 16);  // Uncomment to manually set time
 
   // Update time/date values, so we can set alarms
   rtc.update();

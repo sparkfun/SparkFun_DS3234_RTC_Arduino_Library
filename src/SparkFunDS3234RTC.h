@@ -23,8 +23,8 @@ SparkFun Real Time Clock Module (v14)
 #define TWELVE_HOUR_MODE (1<<6) // 12/24-hour Mode bit in Hour register
 #define TWELVE_HOUR_PM (1<<5)   // am/pm bit in hour register
 
-#define AM 0
-#define PM 1
+#define AM false
+#define PM true
 
 #define SQW_CONTROL_MASK 0xE3 // SQW bit(s) mask in control register
 #define SQW_ENABLE_BIT (1<<2) // SQW output enable bit in control register
@@ -112,6 +112,8 @@ public:
 	///////////////////////
 	// setTime -- Set time and date/day registers of DS3234
 	void setTime(uint8_t sec, uint8_t min, uint8_t hour,
+	             uint8_t day, uint8_t date, uint8_t month, uint8_t year);
+	void setTime(uint8_t sec, uint8_t min, uint8_t hour12, bool pm, 
 	             uint8_t day, uint8_t date, uint8_t month, uint8_t year);
 	// setTime -- Set time and date/day registers of DS3234 (using data array)
 	void setTime(uint8_t * time, uint8_t len);
