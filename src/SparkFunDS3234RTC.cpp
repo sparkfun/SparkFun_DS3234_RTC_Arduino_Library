@@ -13,6 +13,10 @@ Development environment specifics:
 Arduino 1.6.8
 SparkFun RedBoard
 SparkFun Real Time Clock Module (v14)
+
+Updated 16 October 2016 by Vassilis Serasidis <avrsite@yahoo.gr>
+- Added readFromSRAM' and 'writeToSRAM' functions
+
 ******************************************************************************/
 
 #include "SparkFunDS3234RTC.h"
@@ -678,5 +682,16 @@ void DS3234::spiReadBytes(DS3234_registers reg, uint8_t * dest, uint8_t len)
 	digitalWrite(_csPin, HIGH);
 	SPI.endTransaction();
 }
+
+void DS3234::writeToSRAM(uint8_t address, uint8_t data){
+  spiWriteByte(DS3234_REGISTER_SRAMA, address);
+  spiWriteByte(DS3234_REGISTER_SRAMD, data);
+}
+
+uint8_t DS3234::readFromSRAM(uint8_t address){
+  spiWriteByte(DS3234_REGISTER_SRAMA, address);
+  return spiReadByte(DS3234_REGISTER_SRAMD);
+}
+
 
 DS3234 rtc; // Use rtc in sketches
