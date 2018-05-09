@@ -128,7 +128,7 @@ public:
 	// setTime -- Set time and date/day registers of DS3234 (using data array)
 	void setTime(uint8_t * time, uint8_t len);
 	// autoTime -- Set time with compiler time/date
-	bool autoTime();
+	void autoTime();
 	
 	// To set specific values of the clock, use the set____ functions:
 	void setSecond(uint8_t s);
