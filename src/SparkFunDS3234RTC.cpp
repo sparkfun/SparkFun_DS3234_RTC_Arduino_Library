@@ -161,7 +161,7 @@ void DS3234::autoTime()
 	
 	_time[TIME_MONTH] = DECtoBCD(BUILD_MONTH);
 	_time[TIME_DATE] = DECtoBCD(BUILD_DATE);
-    //! Not Y2K (or Y2.1K)-proof :
+        //! Not Y2K (or Y2.1K)-proof :
 	_time[TIME_YEAR] = DECtoBCD(BUILD_YEAR - 2000); 
 	
 	// Calculate weekday (from here: http://stackoverflow.com/a/21235587)
