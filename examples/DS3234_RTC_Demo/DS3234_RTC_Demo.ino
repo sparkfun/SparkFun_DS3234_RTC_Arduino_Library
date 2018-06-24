@@ -42,7 +42,7 @@ void setup()
 
   // Now set the time...
   // You can use the autoTime() function to set the RTC's clock and
-  // date to the compiliers predefined time. (It'll be a few seconds
+  // date to the compiler's predefined time. (It'll be a few seconds
   // behind, but close!)
   rtc.autoTime();
   // Or you can use the rtc.setTime(s, m, h, day, date, month, year)
@@ -53,7 +53,7 @@ void setup()
   // Update time/date values, so we can set alarms
   rtc.update();
   // Configure Alarm(s):
-  // (Optional: enable SQW pin as an intterupt)
+  // (Optional: enable SQW pin as an interrupt)
   rtc.enableAlarmInterrupt();
   // Set alarm1 to alert when seconds hits 30
   rtc.setAlarm1(30);
