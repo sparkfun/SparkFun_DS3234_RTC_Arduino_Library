@@ -17,7 +17,7 @@ SparkFun Real Time Clock Module (v14)
 #include <SPI.h>
 #include <SparkFunDS3234RTC.h>
 
-// Comment out the line below if you want month printed before date.
+// Comment out the line below if you want date printed before month.
 // E.g. October 31, 2016: 10/31/16 vs. 31/10/16
 #define PRINT_USA_DATE
 
