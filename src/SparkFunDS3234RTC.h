@@ -194,7 +194,7 @@ public:
 	void enableAlarmInterrupt(bool alarm1 = true, bool alarm2 = true);
 	
 	// alarm1 and alarm2 check their respective flag in the control/status
-	// register. They return true is the flag is set.
+	// register. They return true if the flag is set.
 	// The "clear" boolean, commands the alarm function to clear the flag
 	// (assuming it was set).
 	bool alarm1(bool clear = true);
