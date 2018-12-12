@@ -15,7 +15,9 @@ SparkFun RedBoard
 SparkFun Real Time Clock Module (v14)
 
 Updated 16 October 2016 by Vassilis Serasidis <avrsite@yahoo.gr>
-- Added readFromSRAM' and 'writeToSRAM' functions
+- Added 'readFromSRAM' and 'writeToSRAM' functions
+Updated 25 November 2018 by Greig Sheridan @greiginsydney
+- Added 'readFromRegister' and 'writeToRegister' functions
 
 ******************************************************************************/
 
@@ -691,6 +693,16 @@ void DS3234::writeToSRAM(uint8_t address, uint8_t data){
 uint8_t DS3234::readFromSRAM(uint8_t address){
   spiWriteByte(DS3234_REGISTER_SRAMA, address);
   return spiReadByte(DS3234_REGISTER_SRAMD);
+}
+
+void DS3234::writeToRegister(uint8_t address, uint8_t data)
+{
+   spiWriteByte(address, data);
+}
+
+uint8_t DS3234::readFromRegister(uint8_t address)
+{
+  return spiReadByte(address);
 }
 
 

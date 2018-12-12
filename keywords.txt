@@ -55,6 +55,8 @@ alarm1	KEYWORD2
 alarm2	KEYWORD2
 readFromSRAM	KEYWORD2
 writeToSRAM	KEYWORD2
+readFromRegister	KEYWORD2
+writeToRegister	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
