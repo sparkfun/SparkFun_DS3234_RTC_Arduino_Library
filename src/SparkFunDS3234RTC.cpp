@@ -690,9 +690,19 @@ void DS3234::writeToSRAM(uint8_t address, uint8_t data){
   spiWriteByte(DS3234_REGISTER_SRAMD, data);
 }
 
+void DS3234::writeToSRAM(uint8_t address, uint8_t * values, size_t len) {
+    spiWriteByte(DS3234_REGISTER_SRAMA, address);
+    spiWriteBytes(DS3234_REGISTER_SRAMD, values, len);
+}
+
 uint8_t DS3234::readFromSRAM(uint8_t address){
   spiWriteByte(DS3234_REGISTER_SRAMA, address);
   return spiReadByte(DS3234_REGISTER_SRAMD);
+}
+
+void DS3234::readFromSRAM(uint8_t address, uint8_t * dest, size_t len) {
+    spiWriteByte(DS3234_REGISTER_SRAMA, address);
+    spiReadBytes(DS3234_REGISTER_SRAMD, dest, len);
 }
 
 void DS3234::writeToRegister(uint8_t address, uint8_t data)
