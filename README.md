@@ -1,7 +1,7 @@
 SparkFun DeadOn RTC Breakout (DS3234) Arduino Library
 ========================================
 
-[![SparkFun DeadOn RTC Breakout](https://cdn.sparkfun.com//assets/parts/4/4/5/5/10160b-01.jpg)](https://www.sparkfun.com/products/10160)
+[![SparkFun DeadOn RTC Breakout](https://cdn.sparkfun.com//assets/parts/4/4/5/5/10160-SparkFun_DeadOn_RTC_Breakout_-_DS3234-01.jpg)](https://www.sparkfun.com/products/10160)
 
 [*SparkFun DeadOn RTC Breakout (BOB-10160)*](https://www.sparkfun.com/products/10160)
 
