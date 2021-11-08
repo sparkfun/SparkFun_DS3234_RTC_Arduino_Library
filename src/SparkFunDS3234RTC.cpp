@@ -702,12 +702,12 @@ uint8_t DS3234::readFromSRAM(uint8_t address)
 
 void DS3234::writeToRegister(uint8_t address, uint8_t data)
 {
-	spiWriteByte(address, data);
+	spiWriteByte((DS3234_registers)address, data);
 }
 
 uint8_t DS3234::readFromRegister(uint8_t address)
 {
-	return spiReadByte(address);
+	return spiReadByte((DS3234_registers)address);
 }
 
 DS3234 rtc; // Use rtc in sketches
