@@ -700,6 +700,27 @@ void DS3234::writeToSRAM(uint8_t address, uint8_t* values, size_t len)
 	spiWriteBytes(DS3234_REGISTER_SRAMD, values, len);
 }
 
+template <typename T>
+void DS3234::writeToSRAM(uint8_t address, T value)
+{
+	uint8_t buf[sizeof(T)];
+	memcpy(buf, &value, sizeof(T));
+	writeToSRAM(address, buf, sizeof(T));
+}
+
+// explicit instantiations for writeToSRAM() template
+// Otherwise we would have to implement the templated writeToSRAM() 
+// function in the header file.
+template void DS3234::writeToSRAM<uint16_t>(uint8_t, uint16_t);
+template void DS3234::writeToSRAM<uint32_t>(uint8_t, uint32_t);
+template void DS3234::writeToSRAM<uint64_t>(uint8_t, uint64_t);
+template void DS3234::writeToSRAM<int8_t>(  uint8_t, int8_t);
+template void DS3234::writeToSRAM<int16_t>( uint8_t, int16_t);
+template void DS3234::writeToSRAM<int32_t>( uint8_t, int32_t);
+template void DS3234::writeToSRAM<int64_t>( uint8_t, int64_t);
+template void DS3234::writeToSRAM<float>(   uint8_t, float);
+template void DS3234::writeToSRAM<double>(  uint8_t, double);
+
 uint8_t DS3234::readFromSRAM(uint8_t address)
 {
 	spiWriteByte(DS3234_REGISTER_SRAMA, address);
@@ -712,6 +733,28 @@ void DS3234::readFromSRAM(uint8_t address, uint8_t* dest, size_t len)
 	spiReadBytes(DS3234_REGISTER_SRAMD, dest, len);
 }
 
+template <typename T>
+T DS3234::readFromSRAM(uint8_t address)
+{
+	uint8_t buf[sizeof(T)];
+	T value;
+	readFromSRAM(address, buf, sizeof(T));
+	memcpy(&value, buf, sizeof(T));
+	return value;
+}
+
+// explicit instantiations for readFromSRAM() template
+// Otherwise we would have to implement the templated readFromSRAM() 
+// function in the header file.
+template uint16_t DS3234::readFromSRAM<uint16_t>(uint8_t);
+template uint32_t DS3234::readFromSRAM<uint32_t>(uint8_t);
+template uint64_t DS3234::readFromSRAM<uint64_t>(uint8_t);
+template int8_t   DS3234::readFromSRAM<int8_t>(  uint8_t);
+template int16_t  DS3234::readFromSRAM<int16_t>( uint8_t);
+template int32_t  DS3234::readFromSRAM<int32_t>( uint8_t);
+template int64_t  DS3234::readFromSRAM<int64_t>( uint8_t);
+template float    DS3234::readFromSRAM<float>(   uint8_t);
+template double   DS3234::readFromSRAM<double>(  uint8_t);
 
 void DS3234::writeToRegister(uint8_t address, uint8_t data)
 {

@@ -125,6 +125,99 @@ void setup()  {
   }
   Serial.println();
 
+  /* Write and read other data types directly to/from SRAM */
+
+  // If you want to store some other data types than bytes or collection of bytes
+  // into SRAM, you can use the "templated" versions of writeToSRAM() and readFromSRAM().
+  // If you don't know about C++ templates and you are curious, you can read up on them
+  // on Wikipedia: https://en.wikipedia.org/wiki/Template_(C%2B%2B).
+  // However, understanding how it works under the hood is by no means necessary! :-)
+
+  // Note:
+  // *You* are responsible for non-overlapping memory ranges. If you write some data type with
+  // a width of, say, four byte to SRAM address x, the next value to store can start at SRAM
+  // address x+4 (because locatons x, x+1, x+2 and x+3 are already in use). 
+
+  // Warning 1:
+  // writeToSRAM() readFromSRAM() do *not* take byte-ordering (i.e. "endian-ness") into
+  // account. If you want to write data to SRAM of the DS3234 one one type of micro
+  // controller, unplug it, re-plug it to another type of micro controller, you have to
+  // make sure that both types of MC work with the same byte ordering, otherwise you might
+  // get garbage. If you never move your RTC from one type of MCU to another type, you are
+  // safe.
+  // You can read more about endianness on Wikipedia: https://en.wikipedia.org/wiki/Endianness
+
+  // Warning 2:
+  // The data type "double" is an alias for "float" (IEEE 754 single precision floating point 
+  // number with 32 bit width) on some Arduinos, and a "real double" (i.e. a IEEE 754 double 
+  // precision floating point number with 64 bit width) on others. Even when mixing Arduinos
+  // with the same endianness, this might lead to data corruption. Again, this is ONLY a problem
+  // when plugging your RTC to another type of Arduino. So, not a problem at all most of the time.
+  // Just trying to be honest here... ;-)
+  
+  // Example 1: Store and read a uint16_t
+  uint16_t uint16_data = 32769;
+
+  // write uint16_t to SRAM
+  Serial.print(F("Writing a uint16_t with value "));
+  Serial.print(uint16_data, DEC);
+  Serial.print(F(" to memory address 0x"));
+  Serial.print(sram_address, HEX);
+  Serial.print(F("."));
+  Serial.println(); 
+  
+  // Note the angled brackets after the function! They tell the compiler which data
+  // type you want to instantiate the template for.
+  rtc.writeToSRAM<uint16_t>(sram_address, uint16_data);
+
+  // And now read the value back:
+  uint16_t read_back_uint16 = rtc.readFromSRAM<uint16_t>(sram_address);
+
+  Serial.print(F("We have read back a uint16_t with value "));
+  Serial.print(read_back_uint16, DEC);
+  Serial.print(F(" from memory address 0x"));
+  Serial.print(sram_address, HEX);
+  Serial.print(F("."));
+  Serial.println();
+
+  Serial.print(F("Written and read uint16_t values are equal: "));
+  if (uint16_data == read_back_uint16) {
+    Serial.println(F("true"));
+  }
+  else {
+    Serial.println(F("false"));    
+  }
+
+  // Example 2: Using a signed integer this time
+  // (skipping most of the Serial.print() stuff...)
+  int32_t int32_data = -128653;
+  rtc.writeToSRAM<int32_t>(sram_address, int32_data);
+
+  int32_t read_back_int32 = rtc.readFromSRAM<int32_t>(sram_address);
+
+  Serial.print(F("Written and read int32_t values are equal: "));
+  if (int32_data == read_back_int32) {
+    Serial.println(F("true"));
+  }
+  else {
+    Serial.println(F("false"));    
+  }
+  
+  // Example 3: Using a floating point
+  // (skipping most of the Serial.print() stuff...)
+  float float_data = 3.14159265358979; // the number pi
+  rtc.writeToSRAM<float>(sram_address, float_data);
+
+  float read_back_float = rtc.readFromSRAM<float>(sram_address);
+
+  Serial.print(F("Written and read float values are equal: "));
+  if (float_data == read_back_float) {
+    Serial.println(F("true"));
+  }
+  else {
+    Serial.println(F("false"));    
+  }
+
   Serial.println(F("\n### DS3242_RTC_SRAM_Demo finished! ###\n"));
 
 } // end of setup(), end of demo
