@@ -133,6 +133,11 @@ void setup()  {
   // on Wikipedia: https://en.wikipedia.org/wiki/Template_(C%2B%2B).
   // However, understanding how it works under the hood is by no means necessary! :-)
 
+  // Note:
+  // *You* are responsible for non-overlapping memory ranges. If you write some data type with
+  // a width of, say, four byte to SRAM address x, the next value to store can start at SRAM
+  // address x+4 (because locatons x, x+1, x+2 and x+3 are already in use). 
+
   // Warning 1:
   // writeToSRAM() readFromSRAM() do *not* take byte-ordering (i.e. "endian-ness") into
   // account. If you want to write data to SRAM of the DS3234 one one type of micro
