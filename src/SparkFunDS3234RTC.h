@@ -29,8 +29,8 @@ Updated 25 November 2018 by Greig Sheridan @greiginsydney
 #define TWELVE_HOUR_MODE (1 << 6) // 12/24-hour Mode bit in Hour register
 #define TWELVE_HOUR_PM (1 << 5)	  // am/pm bit in hour register
 
-#define AM false
-#define PM true
+#define DS3234_AM false
+#define DS3234_PM true
 
 #define SQW_CONTROL_MASK 0xE3	// SQW bit(s) mask in control register
 #define SQW_ENABLE_BIT (1 << 2) // SQW output enable bit in control register
@@ -218,10 +218,10 @@ public:
 	void set24Hour(bool enable24 = true); // Enable/disable 24-hour mode
 
 	void writeToSRAM(uint8_t address, uint8_t data);
-	void writeToSRAM(uint8_t address, uint8_t* values, size_t len);
+	void writeToSRAM(uint8_t address, uint8_t *values, size_t len);
 
 	uint8_t readFromSRAM(uint8_t address);
-	void readFromSRAM(uint8_t address, uint8_t* dest, size_t len);
+	void readFromSRAM(uint8_t address, uint8_t *dest, size_t len);
 
 	void writeToRegister(uint8_t address, uint8_t data);
 	uint8_t readFromRegister(uint8_t address);
