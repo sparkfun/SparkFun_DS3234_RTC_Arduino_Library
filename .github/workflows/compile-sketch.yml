@@ -77,8 +77,8 @@ jobs:
               - name: rp2040:rp2040
                 source-url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
 
-          STM32
-          https://github.com/arduino/ArduinoCore-mbed/blob/master/boards.txt
+          # STM32
+          # https://github.com/arduino/ArduinoCore-mbed/blob/master/boards.txt
           - fqbn: STMicroelectronics:stm32:GenF1
             platforms: |
               - name: STMicroelectronics:stm32
